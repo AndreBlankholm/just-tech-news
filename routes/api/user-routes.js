@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
 });
 
 
-
+//gets user by id
 router.get('/:id', (req, res) => {
   User.findOne({
     attributes: { exclude: ['password'] }, // exclution keys and values of the return go here 
@@ -38,7 +38,7 @@ router.get('/:id', (req, res) => {
 });
 
 
-
+//post to /api/users
 router.post('/', (req, res) => {
   // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
   User.create({
@@ -79,7 +79,7 @@ router.post('/login', (req, res) => {
 });
 
 
-
+//Put by id
 router.put('/:id', (req, res) => {
   // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
 
@@ -104,7 +104,7 @@ router.put('/:id', (req, res) => {
 });
 
 
-
+//DELETE BY ID
 router.delete('/:id', (req, res) => {
   User.destroy({
     where: {

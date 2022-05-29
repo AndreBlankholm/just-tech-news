@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const { User } = require('../../models');
 
+
+
 // get all users
 router.get('/', (req, res) => {
   User.findAll({
@@ -12,6 +14,8 @@ router.get('/', (req, res) => {
       res.status(500).json(err);
     });
 });
+
+
 
 router.get('/:id', (req, res) => {
   User.findOne({
@@ -33,6 +37,8 @@ router.get('/:id', (req, res) => {
     });
 });
 
+
+
 router.post('/', (req, res) => {
   // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
   User.create({
@@ -44,14 +50,42 @@ router.post('/', (req, res) => {
     .catch(err => {
       console.log(err);
       res.status(500).json(err);
-    });
+    });  
 });
+
+
+
+// /api/users/login. P.S. this route will be found at localhost!
+router.post('/login', (req, res) => {
+  // expects {email: 'lernantino@gmail.com', password: 'password1234'}
+  User.findOne({
+    where: {
+      email: req.body.email // We queried the User table using the findOne() method for the email entered by the user and assigned it to req.body.email.
+    }
+  }).then(dbUserData => {
+    if (!dbUserData) {  //if the user is not foun...(400)
+      res.status(400).json({ message: 'No user with that email address!' });
+      return;
+    }
+
+    const validPassword = dbUserData.checkPassword(req.body.password);  //checking password against hash from here down
+    if (!validPassword) {
+      res.status(400).json({ message: 'Incorrect password!' });
+      return;
+    }
+
+    res.json({ user: dbUserData, message: 'You are now logged in!' });
+  });
+});
+
+
 
 router.put('/:id', (req, res) => {
   // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
 
   // pass in req.body instead to only update what's passed through
   User.update(req.body, {
+    individualHooks: true,  //creates a hash passwoed inside Insomnia... api/users/1
     where: {
       id: req.params.id
     }
@@ -68,6 +102,8 @@ router.put('/:id', (req, res) => {
       res.status(500).json(err);
     });
 });
+
+
 
 router.delete('/:id', (req, res) => {
   User.destroy({
@@ -87,5 +123,8 @@ router.delete('/:id', (req, res) => {
       res.status(500).json(err);
     });
 });
+
+
+
 
 module.exports = router;

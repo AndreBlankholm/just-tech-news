@@ -17,6 +17,6 @@ app.use(routes);
 
 
 // turn on connection to db and server
-sequelize.sync({ force: true }).then(() => {
+sequelize.sync({ force: true }).then(() => {  //configuration parameter ({force: true}) means that the databases must sync with the model definitions and associations or they recreate!
   app.listen(PORT, () => console.log('Now listening'));
 });

@@ -2,6 +2,7 @@
 const Post = require('./Post');
 const User = require('./User');
 const Vote = require('./Vote');
+const Comment = require('./Comment');
 
 //CREATE ASSOCIATIONS HERE:
 
@@ -23,7 +24,7 @@ User.belongsToMany(Post, {
 });
 
 Post.belongsToMany(User, {
-  through: Vote,
+  through: Vote,  // through table is use to access Post option
   as: 'voted_posts',
   foreignKey: 'post_id'
 });
@@ -44,5 +45,22 @@ Post.hasMany(Vote, {
   foreignKey: 'post_id'
 });
 
+//________________________ Used with the Commit.js file
+Comment.belongsTo(User, {
+  foreignKey: 'user_id'  //no through table, we dont post/ just need to see comment and what posts it was for
+});
 
-module.exports = { User, Post, Vote };
+Comment.belongsTo(Post, {
+  foreignKey: 'post_id'
+});
+
+User.hasMany(Comment, {
+  foreignKey: 'user_id'
+});
+
+Post.hasMany(Comment, {
+  foreignKey: 'post_id'
+});
+
+
+module.exports = { User, Post, Vote, Comment };

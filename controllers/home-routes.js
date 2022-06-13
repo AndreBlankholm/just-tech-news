@@ -2,7 +2,7 @@ const router = require('express').Router();
 const sequelize = require('../config/connection');
 const { Post, User, Comment, Vote } = require('../models');
 
-// get all posts for homepage     also called the ROOT ROUTE
+// get all posts for homepage
 router.get('/', (req, res) => {
   console.log('======================');
   Post.findAll({
@@ -40,12 +40,14 @@ router.get('/', (req, res) => {
 });
 
 
-
-// created a view for the login page of handlebars.
+//check for a session and redirect to the homepage if one exists by adding the following code:
 router.get('/login', (req, res) => {
+  if (req.session.loggedIn) {
+    res.redirect('/');
+    return;
+  }
+
   res.render('login');
 });
-
-
 
 module.exports = router;

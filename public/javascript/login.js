@@ -1,5 +1,5 @@
 async function loginFormHandler(event) {
-  event.preventDefault();
+  event.preventDefault();  
 
   const email = document.querySelector('#email-login').value.trim();
   const password = document.querySelector('#password-login').value.trim();
@@ -37,7 +37,7 @@ async function signupFormHandler(event) {
         email,
         password
       }),
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' }  //API headers are like an extra source of information for each API call you make. Their job is to represent the meta-data associated with an API request and response.
     });
 
     if (response.ok) {

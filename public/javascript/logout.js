@@ -12,4 +12,4 @@ async function logout() {
   }
   
   document.querySelector('#logout').addEventListener('click', logout);
-  
+  // click event handler that calls the logout route

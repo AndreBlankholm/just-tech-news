@@ -61,7 +61,7 @@ router.post("/", (req, res) => {
     username: req.body.username,
     email: req.body.email,
     password: req.body.password,
-  }).then((dbUserData) => {   // session for cookies/This gives our server easy access to the user's user_id, username, and a Boolean describing whether or not the user is logged in.
+  }).then((dbUserData) => {   //** */ session for cookies/This gives our server easy access to the user's user_id, username, and a Boolean describing whether or not the user is logged in.
     req.session.save(() => {
       req.session.user_id = dbUserData.id;
       req.session.username = dbUserData.username;
@@ -108,8 +108,17 @@ router.post('/login', (req, res) => {
 });
 
 
+// /api/users/logout. P.S. this route will be found at localhost!
 
-
+router.post("/logout", (req, res) => {   //**logout destroys the session data and sends a status of 204 */
+  if (req.session.loggedIn) {
+    req.session.destroy(() => {
+      res.status(204).end();
+    });
+  } else {
+    res.status(404).end();
+  }
+});
 
 
 

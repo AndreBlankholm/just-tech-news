@@ -1,10 +1,10 @@
 const router = require('express').Router();
 const sequelize = require('../config/connection');
-const { Post, User, Comment } = require('../models');
+const { Post, User, Comment, Vote } = require('../models');
 
 // get all posts for homepage
 router.get('/', (req, res) => {
-  console.log('======================');
+  console.log(req.session);
   Post.findAll({
     attributes: [
       'id',
@@ -30,13 +30,24 @@ router.get('/', (req, res) => {
   })
     .then(dbPostData => {
       const posts = dbPostData.map(post => post.get({ plain: true }));
-      console.log(dbPostData[1]);
+
       res.render('homepage', { posts });
     })
     .catch(err => {
       console.log(err);
       res.status(500).json(err);
     });
+});
+
+
+//check for a session and redirect to the homepage if one exists by adding the following code:
+router.get('/login', (req, res) => {
+  if (req.session.loggedIn) {
+    res.redirect('/');
+    return;
+  }
+
+  res.render('login');
 });
 
 module.exports = router;
